@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-04-08T13:39:40Z",
+  "updated_at": "2026-04-08T13:44:27Z",
   "market_date": "2026-04-08",
   "score": {
     "hits": 3,
@@ -27,8 +27,8 @@
         {
           "id": "spy_200d_dev",
           "name": "SPY 200日均线乖离率",
-          "current": 2.32,
-          "current_display": "+2.32%",
+          "current": 2.29,
+          "current_display": "+2.29%",
           "threshold": "> +20%",
           "hit": false,
           "status": "normal",
@@ -74,8 +74,8 @@
         {
           "id": "cnn_fear_greed",
           "name": "CNN恐慌贪婪指数",
-          "current": 27.4,
-          "current_display": "27.4",
+          "current": 27.8,
+          "current_display": "27.8",
           "threshold": "> 80",
           "hit": false,
           "status": "normal",
@@ -94,8 +94,8 @@
         {
           "id": "vix",
           "name": "VIX波动率",
-          "current": 20.15,
-          "current_display": "20.15",
+          "current": 20.13,
+          "current_display": "20.13",
           "threshold": "< 11",
           "hit": false,
           "status": "normal",
@@ -208,8 +208,8 @@
         {
           "id": "etf_volume_momentum",
           "name": "ETF成交额动量(4周)",
-          "current": -39.2,
-          "current_display": "-39.2%",
+          "current": -38.9,
+          "current_display": "-38.9%",
           "threshold": "> +30%",
           "hit": false,
           "status": "normal",
@@ -275,8 +275,8 @@
         {
           "id": "ndx_forward_pe",
           "name": "纳斯达克100追踪PE",
-          "current": 32.1,
-          "current_display": "32.1x",
+          "current": 32.0,
+          "current_display": "32.0x",
           "threshold": "> 38x",
           "hit": false,
           "status": "normal",
