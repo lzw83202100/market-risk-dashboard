@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>US Market Risk Dashboard</title>
+<style>
+  :root {
+    --bg: #0a0a0a;
+    --card-bg: #141414;
+    --border: #222;
+    --text: #e0e0e0;
+    --text-dim: #777;
+    --text-bright: #fff;
+    --green: #22c55e;
+    --amber: #EF9F27;
+    --purple: #7F77DD;
+    --blue: #378ADD;
+    --orange: #D85A30;
+    --red: #E24B4A;
+    --dark-red: #991b1b;
+    --hit-bg: rgba(239,68,68,0.08);
+    --row-alt: rgba(255,255,255,0.02);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans SC", sans-serif;
+    line-height: 1.5;
+    padding: 16px;
+    max-width: 960px;
+    margin: 0 auto;
+  }
+
+  /* Score header */
+  .score-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24px;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    margin-bottom: 20px;
+  }
+  .score-left { display: flex; align-items: baseline; gap: 12px; }
+  .score-hits { font-size: 2.5rem; font-weight: 700; color: var(--text-bright); }
+  .score-total { font-size: 1.2rem; color: var(--text-dim); }
+  .score-pct { font-size: 1rem; color: var(--text-dim); margin-left: 4px; }
+  .score-level {
+    font-size: 1.1rem;
+    font-weight: 600;
+    padding: 6px 16px;
+    border-radius: 8px;
+  }
+  .level-low { color: var(--green); background: rgba(34,197,94,0.1); }
+  .level-mild { color: var(--amber); background: rgba(239,159,39,0.1); }
+  .level-moderate { color: var(--orange); background: rgba(216,90,48,0.1); }
+  .level-high { color: var(--red); background: rgba(226,75,74,0.1); }
+  .level-extreme { color: #ff4444; background: rgba(153,27,27,0.2); }
+
+  /* Category */
+  .category {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    margin-bottom: 16px;
+    overflow: hidden;
+  }
+  .category-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--border);
+  }
+  .category-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .category-name { font-weight: 600; font-size: 0.95rem; }
+  .category-count { color: var(--text-dim); font-size: 0.85rem; margin-left: auto; }
+
+  /* Table */
+  .ind-table { width: 100%; border-collapse: collapse; }
+  .ind-table th {
+    text-align: left;
+    padding: 8px 16px;
+    font-size: 0.75rem;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 1px solid var(--border);
+  }
+  .ind-table td {
+    padding: 10px 16px;
+    font-size: 0.88rem;
+    border-bottom: 1px solid rgba(255,255,255,0.03);
+  }
+  .ind-table tr:nth-child(even) td { background: var(--row-alt); }
+  .ind-table tr.hit td { background: var(--hit-bg); }
+
+  .col-name { width: 40%; }
+  .col-current { width: 25%; text-align: right; font-variant-numeric: tabular-nums; }
+  .col-threshold { width: 25%; text-align: right; color: var(--text-dim); font-size: 0.82rem; }
+  .col-hit { width: 10%; text-align: center; }
+
+  .val-hit { font-weight: 600; }
+  .val-na { color: var(--text-dim); font-style: italic; }
+
+  .hit-yes { color: var(--red); font-weight: 700; }
+  .hit-no { color: #555; }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    padding: 20px;
+    color: var(--text-dim);
+    font-size: 0.8rem;
+    line-height: 1.8;
+  }
+  .footer a { color: var(--text-dim); }
+
+  /* Loading & error */
+  .loading {
+    text-align: center;
+    padding: 60px;
+    color: var(--text-dim);
+    font-size: 1.1rem;
+  }
+
+  /* Mobile */
+  @media (max-width: 640px) {
+    body { padding: 8px; }
+    .score-header { flex-direction: column; gap: 12px; text-align: center; padding: 16px; }
+    .score-hits { font-size: 2rem; }
+    .ind-table th, .ind-table td { padding: 8px 10px; font-size: 0.82rem; }
+    .col-name { width: 35%; }
+    .col-threshold { display: none; }
+    .col-current { width: 40%; }
+    .col-hit { width: 15%; }
+  }
+</style>
+</head>
+<body>
+
+<div id="app">
+  <div class="loading" id="loading">Loading market data...</div>
+</div>
+
+<script>
+const CATEGORY_COLORS = {
+  amber: '#EF9F27',
+  purple: '#7F77DD',
+  blue: '#378ADD',
+  orange: '#D85A30',
+  red: '#E24B4A',
+};
+
+function getLevelClass(pct) {
+  if (pct <= 15) return 'level-low';
+  if (pct <= 30) return 'level-mild';
+  if (pct <= 50) return 'level-moderate';
+  if (pct <= 70) return 'level-high';
+  return 'level-extreme';
+}
+
+function getHitColor(cat_color) {
+  return CATEGORY_COLORS[cat_color] || '#E24B4A';
+}
+
+function renderDashboard(data) {
+  const app = document.getElementById('app');
+  const s = data.score;
+
+  let html = `
+    <div class="score-header">
+      <div class="score-left">
+        <span class="score-hits">${s.hits}/${s.total}</span>
+        <span class="score-pct">警报 (${s.pct}%)</span>
+      </div>
+      <div class="score-level ${getLevelClass(s.pct)}">${s.level}</div>
+    </div>
+  `;
+
+  for (const cat of data.categories) {
+    const catHits = cat.indicators.filter(i => i.hit).length;
+    const catTotal = cat.indicators.filter(i => i.current !== null).length;
+    const dotColor = CATEGORY_COLORS[cat.color] || '#888';
+
+    html += `
+    <div class="category">
+      <div class="category-header">
+        <span class="category-dot" style="background:${dotColor}"></span>
+        <span class="category-name">${cat.name}</span>
+        <span class="category-count">${catHits}/${catTotal}</span>
+      </div>
+      <table class="ind-table">
+        <thead>
+          <tr>
+            <th class="col-name">指标</th>
+            <th class="col-current">当前</th>
+            <th class="col-threshold">阈值</th>
+            <th class="col-hit">状态</th>
+          </tr>
+        </thead>
+        <tbody>
+    `;
+
+    for (const ind of cat.indicators) {
+      const isHit = ind.hit;
+      const isNA = ind.current === null;
+      const rowClass = isHit ? 'hit' : '';
+      const valClass = isNA ? 'val-na' : (isHit ? 'val-hit' : '');
+      const valStyle = isHit ? `color:${getHitColor(cat.color)}` : '';
+      const hitIcon = isHit
+        ? '<span class="hit-yes">&#10003;</span>'
+        : (isNA ? '<span class="val-na">-</span>' : '<span class="hit-no">&#10005;</span>');
+
+      html += `
+          <tr class="${rowClass}">
+            <td class="col-name">${ind.name}</td>
+            <td class="col-current ${valClass}" style="${valStyle}">${ind.current_display}</td>
+            <td class="col-threshold">${ind.threshold}</td>
+            <td class="col-hit">${hitIcon}</td>
+          </tr>
+      `;
+    }
+
+    html += `
+        </tbody>
+      </table>
+    </div>
+    `;
+  }
+
+  // Footer
+  const updated = data.updated_at ? new Date(data.updated_at).toLocaleString('zh-CN', {timeZone: 'UTC', hour12: false}) + ' UTC' : 'Unknown';
+  html += `
+    <div class="footer">
+      Last updated: ${updated}<br>
+      Data sources: Yahoo Finance, FRED, CNN<br>
+      <strong>&#9888; 不构成投资建议</strong>
+    </div>
+  `;
+
+  app.innerHTML = html;
+}
+
+// Fetch data
+async function init() {
+  try {
+    const resp = await fetch('data/latest.json');
+    if (!resp.ok) throw new Error('Failed to load data');
+    const data = await resp.json();
+    renderDashboard(data);
+    document.title = `${data.score.hits}/${data.score.total} US Market Risk`;
+  } catch (e) {
+    document.getElementById('app').innerHTML = `
+      <div class="loading">
+        Failed to load data.<br>
+        <small style="color:#555">${e.message}</small>
+      </div>
+    `;
+  }
+}
+
+init();
+</script>
+</body>
+</html>

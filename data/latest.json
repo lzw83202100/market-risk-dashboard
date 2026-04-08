@@ -1,0 +1,375 @@
+{
+  "updated_at": "2026-04-08T12:59:02Z",
+  "market_date": "2026-04-08",
+  "score": {
+    "hits": 0,
+    "total": 12,
+    "total_all": 32,
+    "pct": 0.0,
+    "level": "低风险(0.0%) 安全区"
+  },
+  "categories": [
+    {
+      "id": "technical",
+      "name": "技术面与周期预警",
+      "color": "amber",
+      "indicators": [
+        {
+          "id": "qqq_2y_ma",
+          "name": "QQQ 2年均线乘数",
+          "current": 1.118,
+          "current_display": "1.118x",
+          "threshold": "> 1.45x",
+          "hit": false,
+          "status": "normal",
+          "error": null
+        },
+        {
+          "id": "spy_200d_dev",
+          "name": "SPY 200日均线乖离率",
+          "current": -0.08,
+          "current_display": "-0.08%",
+          "threshold": "> +20%",
+          "hit": false,
+          "status": "normal",
+          "error": null
+        },
+        {
+          "id": "spy_monthly_rsi",
+          "name": "月线RSI(SPY)",
+          "current": 74.6,
+          "current_display": "74.6",
+          "threshold": "> 80",
+          "hit": false,
+          "status": "normal",
+          "error": null
+        },
+        {
+          "id": "rainbow_valuation",
+          "name": "美股彩虹图估值热图",
+          "current": 39.5,
+          "current_display": "+39.5%",
+          "threshold": "> +40%",
+          "hit": false,
+          "status": "normal",
+          "error": null
+        },
+        {
+          "id": "presidential_cycle",
+          "name": "总统周期第3-4年顶部",
+          "current": 2,
+          "current_display": "中期年",
+          "threshold": "选举年+高估值",
+          "hit": false,
+          "status": "normal",
+          "error": null
+        }
+      ]
+    },
+    {
+      "id": "sentiment",
+      "name": "市场情绪与行为",
+      "color": "purple",
+      "indicators": [
+        {
+          "id": "cnn_fear_greed",
+          "name": "CNN恐慌贪婪指数",
+          "current": 22.5,
+          "current_display": "22.5",
+          "threshold": "> 80",
+          "hit": false,
+          "status": "normal",
+          "error": null
+        },
+        {
+          "id": "cboe_put_call",
+          "name": "CBOE Put/Call比率",
+          "current": null,
+          "current_display": "N/A",
+          "threshold": "< 0.50",
+          "hit": false,
+          "status": "error",
+          "error": "data source unavailable"
+        },
+        {
+          "id": "vix",
+          "name": "VIX波动率",
+          "current": 20.46,
+          "current_display": "20.46",
+          "threshold": "< 11",
+          "hit": false,
+          "status": "normal",
+          "error": null
+        },
+        {
+          "id": "aaii_bull",
+          "name": "AAII散户牛市情绪",
+          "current": null,
+          "current_display": "N/A",
+          "threshold": "> 60%",
+          "hit": false,
+          "status": "error",
+          "error": "data source unavailable"
+        },
+        {
+          "id": "naaim_exposure",
+          "name": "NAAIM机构风险敞口",
+          "current": 68.4,
+          "current_display": "68.4%",
+          "threshold": "> 85%",
+          "hit": false,
+          "status": "normal",
+          "error": null
+        }
+      ]
+    },
+    {
+      "id": "breadth",
+      "name": "市场广度与内部健康",
+      "color": "blue",
+      "indicators": [
+        {
+          "id": "pct_above_200d",
+          "name": "200日均线以上股票占比",
+          "current": null,
+          "current_display": "N/A",
+          "threshold": "< 60%",
+          "hit": false,
+          "status": "error",
+          "error": "pct_above_200d data unavailable"
+        },
+        {
+          "id": "hindenburg_omen",
+          "name": "兴登堡凶兆",
+          "current": null,
+          "current_display": "N/A",
+          "threshold": ">= 3次/30天",
+          "hit": false,
+          "status": "error",
+          "error": "NYSE new high/low data not freely available"
+        },
+        {
+          "id": "mcclellan_sum",
+          "name": "麦克莱伦加总指数",
+          "current": null,
+          "current_display": "N/A",
+          "threshold": "死叉0轴或高位回落",
+          "hit": false,
+          "status": "error",
+          "error": "NYSE advance/decline data not freely available"
+        },
+        {
+          "id": "ad_line_divergence",
+          "name": "腾落线(A/D Line)背离",
+          "current": null,
+          "current_display": "N/A",
+          "threshold": "指数新高但A/D未新高",
+          "hit": false,
+          "status": "error",
+          "error": "NYSE advance/decline data not freely available"
+        },
+        {
+          "id": "nyse_high_low_pct",
+          "name": "NYSE新高/新低比率",
+          "current": null,
+          "current_display": "N/A",
+          "threshold": "< 20%",
+          "hit": false,
+          "status": "error",
+          "error": "NYSE new high/low data not freely available"
+        },
+        {
+          "id": "pct_above_50d",
+          "name": "50日均线以上股票占比",
+          "current": null,
+          "current_display": "N/A",
+          "threshold": "> 80%",
+          "hit": false,
+          "status": "error",
+          "error": "pct_above_50d data unavailable"
+        }
+      ]
+    },
+    {
+      "id": "leverage",
+      "name": "杠杆与资金结构风险",
+      "color": "orange",
+      "indicators": [
+        {
+          "id": "margin_debt_ratio",
+          "name": "FINRA保证金债务/总市值",
+          "current": null,
+          "current_display": "N/A",
+          "threshold": "> 2.5%",
+          "hit": false,
+          "status": "error",
+          "error": "data source unavailable"
+        },
+        {
+          "id": "etf_volume_momentum",
+          "name": "ETF成交额动量(4周)",
+          "current": -12.3,
+          "current_display": "-12.3%",
+          "threshold": "> +30%",
+          "hit": false,
+          "status": "normal",
+          "error": null
+        },
+        {
+          "id": "insider_sell_buy",
+          "name": "内部人卖出/买入比率",
+          "current": null,
+          "current_display": "N/A",
+          "threshold": "> 3x",
+          "hit": false,
+          "status": "error",
+          "error": "free insider data source unavailable"
+        },
+        {
+          "id": "spy_rsp_divergence",
+          "name": "SPY vs RSP等权重背离",
+          "current": -3.1,
+          "current_display": "-3.1%",
+          "threshold": "> 15%",
+          "hit": false,
+          "status": "normal",
+          "error": null
+        },
+        {
+          "id": "vix_term_structure",
+          "name": "投机者情绪(VIX9D/VIX)",
+          "current": 1.058,
+          "current_display": "1.058",
+          "threshold": "< 0.85",
+          "hit": false,
+          "status": "normal",
+          "error": null
+        }
+      ]
+    },
+    {
+      "id": "valuation",
+      "name": "核心估值泡沫区",
+      "color": "red",
+      "indicators": [
+        {
+          "id": "buffett_indicator",
+          "name": "巴菲特指标(全球化调整)",
+          "current": null,
+          "current_display": "N/A",
+          "threshold": "> 180%",
+          "hit": false,
+          "status": "error",
+          "error": "FRED_API_KEY not set"
+        },
+        {
+          "id": "shiller_cape",
+          "name": "席勒CAPE(Margin调整)",
+          "current": null,
+          "current_display": "N/A",
+          "threshold": "> 42x",
+          "hit": false,
+          "status": "error",
+          "error": "data source unavailable"
+        },
+        {
+          "id": "ndx_forward_pe",
+          "name": "纳斯达克100追踪PE",
+          "current": 31.1,
+          "current_display": "31.1x",
+          "threshold": "> 38x",
+          "hit": false,
+          "status": "normal",
+          "error": null
+        },
+        {
+          "id": "tobins_q",
+          "name": "Tobin's Q(无形资产调整)",
+          "current": null,
+          "current_display": "N/A",
+          "threshold": "> 2.2",
+          "hit": false,
+          "status": "error",
+          "error": "data source unavailable"
+        },
+        {
+          "id": "household_equity_pct",
+          "name": "家庭股票配置(上调阈值)",
+          "current": null,
+          "current_display": "N/A",
+          "threshold": "> 50%",
+          "hit": false,
+          "status": "error",
+          "error": "data source unavailable"
+        }
+      ]
+    },
+    {
+      "id": "macro",
+      "name": "宏观流动性与政策",
+      "color": "red",
+      "indicators": [
+        {
+          "id": "yield_curve_10y2y",
+          "name": "美债收益率曲线(10Y-2Y)",
+          "current": null,
+          "current_display": "N/A",
+          "threshold": "> +0.50%",
+          "hit": false,
+          "status": "error",
+          "error": "FRED_API_KEY not set"
+        },
+        {
+          "id": "fed_funds_rate",
+          "name": "美联储政策拐点",
+          "current": null,
+          "current_display": "N/A",
+          "threshold": "停止降息转升息",
+          "hit": false,
+          "status": "error",
+          "error": "FRED_API_KEY not set"
+        },
+        {
+          "id": "m2_liquidity",
+          "name": "M2流动性比率",
+          "current": null,
+          "current_display": "N/A",
+          "threshold": "> 3.25",
+          "hit": false,
+          "status": "error",
+          "error": "FRED_API_KEY not set"
+        },
+        {
+          "id": "wei",
+          "name": "Weekly Economic Index",
+          "current": null,
+          "current_display": "N/A",
+          "threshold": "< 0",
+          "hit": false,
+          "status": "error",
+          "error": "FRED_API_KEY not set"
+        },
+        {
+          "id": "hy_oas",
+          "name": "高收益信用利差(HY OAS)",
+          "current": null,
+          "current_display": "N/A",
+          "threshold": "> 400bps",
+          "hit": false,
+          "status": "error",
+          "error": "FRED_API_KEY not set"
+        },
+        {
+          "id": "retail_defense",
+          "name": "零售销售+防御板块强度",
+          "current": null,
+          "current_display": "N/A",
+          "threshold": "< 2% YoY + 防御板块跑赢",
+          "hit": false,
+          "status": "error",
+          "error": null
+        }
+      ]
+    }
+  ]
+}
