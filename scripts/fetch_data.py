@@ -388,6 +388,7 @@ def calc_naaim_exposure():
 @safe
 def calc_pct_above_200d():
     """S&P 500 中在200日均线以上的股票占比"""
+    import re
     for ticker in ["MMTH", "^SPXA200R"]:
         try:
             df = yf_download(ticker, period="1mo")
@@ -403,12 +404,26 @@ def calc_pct_above_200d():
                 )
         except Exception:
             continue
+    # 网页抓取 fallback
+    try:
+        url = "https://www.barchart.com/stocks/market-performance"
+        r = requests.get(url, headers={**HEADERS, "Accept": "text/html"}, timeout=TIMEOUT)
+        match = re.search(r'200-Day.*?(\d+\.?\d*)%', r.text, re.DOTALL)
+        if match:
+            current = round(float(match.group(1)), 1)
+            return make_indicator(
+                "pct_above_200d", "200日均线以上股票占比",
+                current, f"{current}%", "< 60%", current < 60
+            )
+    except Exception:
+        pass
     raise ValueError("pct_above_200d data unavailable")
 
 
 @safe
 def calc_pct_above_50d():
     """S&P 500 中在50日均线以上的股票占比"""
+    import re
     for ticker in ["MMFI", "^SPXA50R"]:
         try:
             df = yf_download(ticker, period="1mo")
@@ -424,6 +439,19 @@ def calc_pct_above_50d():
                 )
         except Exception:
             continue
+    # 网页抓取 fallback
+    try:
+        url = "https://www.barchart.com/stocks/market-performance"
+        r = requests.get(url, headers={**HEADERS, "Accept": "text/html"}, timeout=TIMEOUT)
+        match = re.search(r'50-Day.*?(\d+\.?\d*)%', r.text, re.DOTALL)
+        if match:
+            current = round(float(match.group(1)), 1)
+            return make_indicator(
+                "pct_above_50d", "50日均线以上股票占比",
+                current, f"{current}%", "> 80%", current > 80
+            )
+    except Exception:
+        pass
     raise ValueError("pct_above_50d data unavailable")
 
 
@@ -475,25 +503,35 @@ def calc_nyse_high_low_pct():
 @safe
 def calc_margin_debt_ratio():
     """FINRA保证金债务/总市值"""
-    try:
-        margin = fred_get("BOGZ1FL663067003Q", limit=5)
-        wilshire = fred_get("WILL5000PRFC", limit=5)
-        if margin.empty or wilshire.empty:
-            raise ValueError("FRED data unavailable")
-        # 保证金债务单位: 百万美元; Wilshire: 指数点 ≈ 十亿美元
-        margin_val = margin["value"].iloc[-1]
-        wilshire_val = wilshire["value"].iloc[-1]
-        # Wilshire 5000 每点 ≈ $1B, margin_debt 单位百万
-        ratio = round(margin_val / (wilshire_val * 1000) * 100, 2)
-        return make_indicator(
-            "margin_debt_ratio", "FINRA保证金债务/总市值",
-            ratio, f"{ratio}%", "> 2.5%", ratio > 2.5
-        )
-    except Exception:
-        return make_indicator(
-            "margin_debt_ratio", "FINRA保证金债务/总市值",
-            None, "N/A", "> 2.5%", False, error="data source unavailable"
-        )
+    margin_val = None
+    for series in ["BOGZ1FL663067003Q", "BOGZ1FL663067003A"]:
+        try:
+            margin = fred_get(series, limit=5)
+            if not margin.empty:
+                margin_val = margin["value"].iloc[-1]
+                break
+        except Exception:
+            continue
+
+    wilshire_val = None
+    for series in ["WILL5000PRFC", "WILL5000PR"]:
+        try:
+            wilshire = fred_get(series, limit=5)
+            if not wilshire.empty:
+                wilshire_val = wilshire["value"].iloc[-1]
+                break
+        except Exception:
+            continue
+
+    if margin_val is None or wilshire_val is None:
+        raise ValueError("FRED data unavailable")
+
+    # 保证金债务单位: 百万美元; Wilshire: 指数点 ≈ 十亿美元
+    ratio = round(margin_val / (wilshire_val * 1000) * 100, 2)
+    return make_indicator(
+        "margin_debt_ratio", "FINRA保证金债务/总市值",
+        ratio, f"{ratio}%", "> 2.5%", ratio > 2.5
+    )
 
 
 @safe
@@ -578,13 +616,34 @@ def calc_vix_term_structure(df_2y, df_vix9d):
 @safe
 def calc_buffett_indicator():
     """巴菲特指标 (Wilshire 5000 / GDP)"""
-    wilshire = fred_get("WILL5000PRFC", limit=5)
+    # 尝试多个 FRED series
+    w_val = None
+    for series in ["WILL5000PRFC", "WILL5000PR"]:
+        try:
+            wilshire = fred_get(series, limit=5)
+            if not wilshire.empty:
+                w_val = wilshire["value"].iloc[-1]
+                break
+        except Exception:
+            continue
+
+    # yfinance fallback
+    if w_val is None:
+        try:
+            df = yf_download("^W5000", period="5d")
+            if isinstance(df.columns, pd.MultiIndex):
+                close = df["Close"].iloc[:, 0].dropna()
+            else:
+                close = df["Close"].dropna()
+            if len(close) > 0:
+                w_val = float(close.iloc[-1])
+        except Exception:
+            pass
+
     gdp = fred_get("GDP", limit=5)
-    if wilshire.empty or gdp.empty:
-        raise ValueError("FRED data unavailable")
-    # Wilshire: 指数点, GDP: 十亿美元
-    # Wilshire 5000 total market cap ≈ index value × 1B
-    w_val = wilshire["value"].iloc[-1]
+    if w_val is None or gdp.empty:
+        raise ValueError("data unavailable")
+
     g_val = gdp["value"].iloc[-1]
     ratio = round(w_val / g_val * 100, 1)
     return make_indicator(
@@ -595,9 +654,23 @@ def calc_buffett_indicator():
 
 @safe
 def calc_shiller_cape():
-    """席勒CAPE"""
+    """席勒CAPE — 从 multpl.com 抓取"""
+    import re
     try:
-        # 尝试从 FRED 获取
+        url = "https://www.multpl.com/shiller-pe"
+        r = requests.get(url, headers=HEADERS, timeout=TIMEOUT)
+        r.raise_for_status()
+        match = re.search(r'Current Shiller PE.*?(\d+\.?\d*)', r.text, re.DOTALL)
+        if match:
+            val = round(float(match.group(1)), 1)
+            return make_indicator(
+                "shiller_cape", "席勒CAPE(Margin调整)",
+                val, f"{val}x", "> 42x", val > 42
+            )
+    except Exception:
+        pass
+    # FRED fallback
+    try:
         cape = fred_get("CAPE10", limit=5)
         if not cape.empty:
             val = round(cape["value"].iloc[-1], 1)
@@ -607,11 +680,7 @@ def calc_shiller_cape():
             )
     except Exception:
         pass
-    # 备选：从 multpl.com 等来源
-    return make_indicator(
-        "shiller_cape", "席勒CAPE(Margin调整)",
-        None, "N/A", "> 42x", False, error="data source unavailable"
-    )
+    raise ValueError("data source unavailable")
 
 
 @safe
@@ -759,10 +828,11 @@ def calc_hy_oas():
     df = fred_get("BAMLH0A0HYM2", limit=10)
     if df.empty:
         raise ValueError("FRED data unavailable")
-    current = round(df["value"].iloc[-1], 0)
+    pct_val = df["value"].iloc[-1]  # FRED 给的是百分比，如 3.5 = 350bps
+    bps = round(pct_val * 100, 0)
     return make_indicator(
         "hy_oas", "高收益信用利差(HY OAS)",
-        current, f"{int(current)}bps", "> 400bps", current > 400
+        bps, f"{int(bps)}bps", "> 400bps", bps > 400
     )
 
 
