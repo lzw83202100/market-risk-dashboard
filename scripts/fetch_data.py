@@ -45,7 +45,7 @@ INDICATOR_META = {
     "nyse_high_low_pct": ("NYSE新高/新低比率", "< 20%"),
     "pct_above_50d": ("50日均线以上股票占比", "> 80%"),
     "margin_debt_ratio": ("FINRA保证金债务/总市值", "> 2.5%"),
-    "etf_volume_momentum": ("ETF成交额动量(4周)", "> +30%"),
+    "etf_volume_momentum": ("ETF成交额动量(1周/4周)", "> +30%"),
     "insider_sell_buy": ("内部人卖出/买入比率", "> 3x"),
     "spy_rsp_divergence": ("SPY vs RSP等权重背离", "> 15%"),
     "vix_term_structure": ("投机者情绪(VIX9D/VIX)", "< 0.85"),
@@ -56,7 +56,7 @@ INDICATOR_META = {
     "household_equity_pct": ("家庭股票配置(上调阈值)", "> 50%"),
     "yield_curve_10y2y": ("美债收益率曲线(10Y-2Y)", "> +0.50%"),
     "fed_funds_rate": ("美联储政策拐点", "停止降息转升息"),
-    "m2_liquidity": ("M2流动性比率", "> 3.25"),
+    "m2_liquidity": ("M2流动性比率", "> 0.90"),
     "wei": ("Weekly Economic Index", "< 0"),
     "hy_oas": ("高收益信用利差(HY OAS)", "> 400bps"),
     "retail_defense": ("零售销售+防御板块强度", "< 2% YoY + 防御板块跑赢"),
@@ -307,11 +307,15 @@ def calc_spy_200d_dev(df_2y):
 
 
 @safe
-def calc_spy_monthly_rsi(df_2y):
-    close = df_2y["Close"]["SPY"].dropna()
+def calc_spy_monthly_rsi(df_spy_long):
+    """用全量历史数据计算月线RSI，更稳定"""
+    if isinstance(df_spy_long.columns, pd.MultiIndex):
+        close = df_spy_long["Close"].iloc[:, 0].dropna()
+    else:
+        close = df_spy_long["Close"].dropna()
     monthly = close.resample("ME").last().dropna()
     rsi_val = rsi(monthly, 14)
-    current = round(rsi_val.iloc[-1], 1)
+    current = round(float(rsi_val.iloc[-1]), 1)
     return make_indicator(
         "spy_monthly_rsi", "月线RSI(SPY)",
         current, f"{current}", "> 80", current > 80
@@ -347,8 +351,8 @@ def calc_presidential_cycle(spy_dev_val):
     cycle_year = year % 4  # 0=选举年
     labels = {0: "选举年", 1: "后选举年", 2: "中期年", 3: "前选举年"}
     label = labels[cycle_year]
-    # 只有选举年且SPY高估值才警报
-    hit = (cycle_year == 0 and spy_dev_val is not None and spy_dev_val > 10)
+    # 前选举年或选举年 + SPY高估值才警报
+    hit = (cycle_year in (0, 3) and spy_dev_val is not None and spy_dev_val > 10)
     return make_indicator(
         "presidential_cycle", "总统周期第3-4年顶部",
         cycle_year, label, "选举年+高估值", hit
@@ -639,7 +643,7 @@ def calc_margin_debt_ratio():
 
 @safe
 def calc_etf_volume_momentum(df_2y):
-    """ETF成交额动量(4周)"""
+    """ETF成交额动量(1周/4周)"""
     close = df_2y["Close"]["SPY"].dropna()
     volume = df_2y["Volume"]["SPY"].dropna()
     # 对齐索引
@@ -652,7 +656,7 @@ def calc_etf_volume_momentum(df_2y):
     avg_20d = turnover.iloc[-20:].mean()
     momentum = round((avg_5d / avg_20d - 1) * 100, 1)
     return make_indicator(
-        "etf_volume_momentum", "ETF成交额动量(4周)",
+        "etf_volume_momentum", "ETF成交额动量(1周/4周)",
         momentum, f"{momentum:+.1f}%", "> +30%", momentum > 30
     )
 
@@ -899,16 +903,19 @@ def calc_fed_funds_rate():
 
 @safe
 def calc_m2_liquidity():
-    """M2流动性比率"""
+    """M2流动性比率 (M2/GDP)
+    M2SL 和 GDP 都是十亿美元，比率通常在 0.65~0.90 之间
+    历史高点约 0.90（2020疫情期），正常约 0.70
+    阈值 > 0.90 表示流动性过剩
+    """
     m2 = fred_get("M2SL", limit=5)
     gdp = fred_get("GDP", limit=5)
     if m2.empty or gdp.empty:
         raise ValueError("FRED data unavailable")
-    # M2: 十亿美元, GDP: 十亿美元
     ratio = round(m2["value"].iloc[-1] / gdp["value"].iloc[-1], 2)
     return make_indicator(
         "m2_liquidity", "M2流动性比率",
-        ratio, f"{ratio}", "> 3.25", ratio > 3.25
+        ratio, f"{ratio}", "> 0.90", ratio > 0.90
     )
 
 
@@ -994,7 +1001,7 @@ def build_output():
     # ---- Category 1: 技术面与周期预警 ----
     qqq_2y, e1 = calc_qqq_2y_ma(df_2y, df_qqq_3y)
     spy_dev, e2 = calc_spy_200d_dev(df_2y)
-    spy_rsi, e3 = calc_spy_monthly_rsi(df_2y)
+    spy_rsi, e3 = calc_spy_monthly_rsi(df_spy_long)
     rainbow, e4 = calc_rainbow_valuation(df_spy_long)
 
     # 总统周期需要 spy_dev 的值
