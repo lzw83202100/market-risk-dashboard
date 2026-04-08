@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-04-08T14:02:48Z",
+  "updated_at": "2026-04-08T14:18:18Z",
   "market_date": "2026-04-08",
   "score": {
     "hits": 3,
@@ -27,8 +27,8 @@
         {
           "id": "spy_200d_dev",
           "name": "SPY 200日均线乖离率",
-          "current": 2.25,
-          "current_display": "+2.25%",
+          "current": 2.26,
+          "current_display": "+2.26%",
           "threshold": "> +20%",
           "hit": false,
           "status": "normal",
@@ -94,8 +94,8 @@
         {
           "id": "vix",
           "name": "VIX波动率",
-          "current": 20.33,
-          "current_display": "20.33",
+          "current": 20.79,
+          "current_display": "20.79",
           "threshold": "< 11",
           "hit": false,
           "status": "normal",
@@ -114,12 +114,12 @@
         {
           "id": "naaim_exposure",
           "name": "NAAIM机构风险敞口",
-          "current": 68.4,
-          "current_display": "68.4%",
+          "current": null,
+          "current_display": "N/A",
           "threshold": "> 85%",
           "hit": false,
-          "status": "normal",
-          "error": null
+          "status": "error",
+          "error": "data source unavailable"
         }
       ]
     },
@@ -131,12 +131,12 @@
         {
           "id": "pct_above_200d",
           "name": "200日均线以上股票占比",
-          "current": null,
-          "current_display": "N/A",
+          "current": 55.8,
+          "current_display": "55.8%",
           "threshold": "< 60%",
-          "hit": false,
-          "status": "error",
-          "error": "pct_above_200d data unavailable"
+          "hit": true,
+          "status": "hit",
+          "error": null
         },
         {
           "id": "hindenburg_omen",
@@ -181,12 +181,12 @@
         {
           "id": "pct_above_50d",
           "name": "50日均线以上股票占比",
-          "current": null,
-          "current_display": "N/A",
+          "current": 50.0,
+          "current_display": "50.0%",
           "threshold": "> 80%",
           "hit": false,
-          "status": "error",
-          "error": "pct_above_50d data unavailable"
+          "status": "normal",
+          "error": null
         }
       ]
     },
@@ -208,8 +208,8 @@
         {
           "id": "etf_volume_momentum",
           "name": "ETF成交额动量(4周)",
-          "current": -37.6,
-          "current_display": "-37.6%",
+          "current": -37.1,
+          "current_display": "-37.1%",
           "threshold": "> +30%",
           "hit": false,
           "status": "normal",
@@ -228,8 +228,8 @@
         {
           "id": "spy_rsp_divergence",
           "name": "SPY vs RSP等权重背离",
-          "current": -3.2,
-          "current_display": "-3.2%",
+          "current": -3.3,
+          "current_display": "-3.3%",
           "threshold": "> 15%",
           "hit": false,
           "status": "normal",
@@ -238,8 +238,8 @@
         {
           "id": "vix_term_structure",
           "name": "投机者情绪(VIX9D/VIX)",
-          "current": 0.876,
-          "current_display": "0.876",
+          "current": 0.899,
+          "current_display": "0.899",
           "threshold": "< 0.85",
           "hit": false,
           "status": "normal",
@@ -255,12 +255,12 @@
         {
           "id": "buffett_indicator",
           "name": "巴菲特指标(全球化调整)",
-          "current": 210.8,
-          "current_display": "210.8%",
+          "current": null,
+          "current_display": "N/A",
           "threshold": "> 180%",
-          "hit": true,
-          "status": "hit",
-          "error": null
+          "hit": false,
+          "status": "error",
+          "error": "500 Server Error: Internal Server Error for url: https://api.stlouisfed.org/fred/series/observations?series_id=GDP&api_key=39e5a1ae3c4c3af62be39d3ad61799f8&file_type=json&sort_order=desc&limit=5"
         },
         {
           "id": "shiller_cape",
