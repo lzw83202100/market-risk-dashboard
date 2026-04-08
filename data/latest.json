@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-04-08T13:44:27Z",
+  "updated_at": "2026-04-08T14:02:48Z",
   "market_date": "2026-04-08",
   "score": {
     "hits": 3,
@@ -17,8 +17,8 @@
         {
           "id": "qqq_2y_ma",
           "name": "QQQ 2年均线乘数",
-          "current": 1.152,
-          "current_display": "1.152x",
+          "current": 1.15,
+          "current_display": "1.15x",
           "threshold": "> 1.45x",
           "hit": false,
           "status": "normal",
@@ -27,8 +27,8 @@
         {
           "id": "spy_200d_dev",
           "name": "SPY 200日均线乖离率",
-          "current": 2.29,
-          "current_display": "+2.29%",
+          "current": 2.25,
+          "current_display": "+2.25%",
           "threshold": "> +20%",
           "hit": false,
           "status": "normal",
@@ -47,8 +47,8 @@
         {
           "id": "rainbow_valuation",
           "name": "美股彩虹图估值热图",
-          "current": 42.9,
-          "current_display": "+42.9%",
+          "current": 42.8,
+          "current_display": "+42.8%",
           "threshold": "> +40%",
           "hit": true,
           "status": "hit",
@@ -74,8 +74,8 @@
         {
           "id": "cnn_fear_greed",
           "name": "CNN恐慌贪婪指数",
-          "current": 27.8,
-          "current_display": "27.8",
+          "current": 29.3,
+          "current_display": "29.3",
           "threshold": "> 80",
           "hit": false,
           "status": "normal",
@@ -94,8 +94,8 @@
         {
           "id": "vix",
           "name": "VIX波动率",
-          "current": 20.13,
-          "current_display": "20.13",
+          "current": 20.33,
+          "current_display": "20.33",
           "threshold": "< 11",
           "hit": false,
           "status": "normal",
@@ -208,8 +208,8 @@
         {
           "id": "etf_volume_momentum",
           "name": "ETF成交额动量(4周)",
-          "current": -38.9,
-          "current_display": "-38.9%",
+          "current": -37.6,
+          "current_display": "-37.6%",
           "threshold": "> +30%",
           "hit": false,
           "status": "normal",
@@ -228,8 +228,8 @@
         {
           "id": "spy_rsp_divergence",
           "name": "SPY vs RSP等权重背离",
-          "current": -3.1,
-          "current_display": "-3.1%",
+          "current": -3.2,
+          "current_display": "-3.2%",
           "threshold": "> 15%",
           "hit": false,
           "status": "normal",
@@ -238,8 +238,8 @@
         {
           "id": "vix_term_structure",
           "name": "投机者情绪(VIX9D/VIX)",
-          "current": 1.058,
-          "current_display": "1.058",
+          "current": 0.876,
+          "current_display": "0.876",
           "threshold": "< 0.85",
           "hit": false,
           "status": "normal",
