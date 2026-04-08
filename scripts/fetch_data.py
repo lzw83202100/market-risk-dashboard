@@ -134,6 +134,70 @@ def rsi(series, period=14):
     return 100 - 100 / (1 + rs)
 
 
+def get_sp500_tickers():
+    """从 Wikipedia 获取 S&P 500 成分股列表"""
+    url = "https://en.wikipedia.org/wiki/List_of_S%26P_500_companies"
+    r = requests.get(url, headers=HEADERS, timeout=TIMEOUT)
+    r.raise_for_status()
+    tables = pd.read_html(r.text)
+    df = tables[0]
+    tickers = df["Symbol"].tolist()
+    # 清理：BRK.B → BRK-B (yfinance 格式)
+    tickers = [t.replace(".", "-") for t in tickers]
+    return tickers
+
+
+def calc_pct_above_ma(tickers, ma_window):
+    """批量计算股票在 N 日均线以上的占比
+    下载足够的历史数据，计算每只股票当前价格 vs N日均线
+    """
+    # 需要至少 ma_window 个交易日的数据
+    period = "1y" if ma_window <= 200 else "2y"
+    print(f"  Downloading {len(tickers)} stocks for {ma_window}-day MA check...", file=sys.stderr)
+
+    # 分批下载（每批50只，避免超时）
+    batch_size = 50
+    above = 0
+    total_valid = 0
+
+    for i in range(0, len(tickers), batch_size):
+        batch = tickers[i:i+batch_size]
+        try:
+            df = yf.download(batch, period=period, progress=False)
+            if df.empty:
+                continue
+            close = df["Close"]
+            if isinstance(close, pd.Series):
+                # 单只股票
+                close = close.to_frame(batch[0])
+
+            for ticker in batch:
+                try:
+                    if ticker not in close.columns:
+                        continue
+                    series = close[ticker].dropna()
+                    if len(series) < ma_window:
+                        continue
+                    ma_val = series.rolling(ma_window).mean().iloc[-1]
+                    if pd.isna(ma_val):
+                        continue
+                    total_valid += 1
+                    if series.iloc[-1] > ma_val:
+                        above += 1
+                except Exception:
+                    continue
+        except Exception as e:
+            print(f"  Batch {i//batch_size} failed: {e}", file=sys.stderr)
+            continue
+
+    if total_valid == 0:
+        raise ValueError("No valid stocks found")
+
+    pct = round(above / total_valid * 100, 1)
+    print(f"  {ma_window}-day MA: {above}/{total_valid} = {pct}%", file=sys.stderr)
+    return pct
+
+
 def to_python(val):
     """numpy/pandas 类型转 Python 原生类型，确保 JSON 可序列化"""
     if val is None:
@@ -309,7 +373,9 @@ def calc_vix(df_2y):
 
 @safe
 def calc_cboe_put_call():
-    """尝试从 yfinance 获取 put/call 比率"""
+    """获取 CBOE equity put/call 比率"""
+    import re
+    # 方法1: yfinance
     for ticker in ["^PCCE", "^PCALL"]:
         try:
             df = yf_download(ticker, period="1mo")
@@ -325,34 +391,72 @@ def calc_cboe_put_call():
                 )
         except Exception:
             continue
-    return make_indicator(
-        "cboe_put_call", "CBOE Put/Call比率",
-        None, "N/A", "< 0.50", False, error="data source unavailable"
-    )
+    # 方法2: CBOE 官网 CSV
+    try:
+        url = "https://www.cboe.com/us/options/market_statistics/daily/"
+        r = requests.get(url, headers={**HEADERS, "Accept": "text/html"}, timeout=TIMEOUT)
+        r.raise_for_status()
+        # 尝试找到 equity put/call ratio
+        match = re.search(r'(?:equity|EQUITY).*?put.*?call.*?(\d+\.?\d*)', r.text, re.DOTALL | re.IGNORECASE)
+        if match:
+            val = round(float(match.group(1)), 3)
+            if 0.1 < val < 3.0:  # 合理范围
+                return make_indicator(
+                    "cboe_put_call", "CBOE Put/Call比率",
+                    val, f"{val}", "< 0.50", val < 0.50
+                )
+    except Exception:
+        pass
+    # 方法3: 从 FRED 获取 total P/C ratio
+    try:
+        df = fred_get("PCOTTM", limit=5)
+        if not df.empty:
+            val = round(df["value"].iloc[-1], 3)
+            return make_indicator(
+                "cboe_put_call", "CBOE Put/Call比率",
+                val, f"{val}", "< 0.50", val < 0.50
+            )
+    except Exception:
+        pass
+    raise ValueError("data source unavailable")
 
 
 @safe
 def calc_aaii_bull():
-    """尝试获取 AAII 散户情绪数据"""
-    try:
-        url = "https://www.aaii.com/sentimentsurvey/sent_results"
-        r = requests.get(url, headers=HEADERS, timeout=TIMEOUT)
-        r.raise_for_status()
-        import re
-        # 尝试解析 bullish 百分比
-        match = re.search(r'Bullish.*?(\d+\.?\d*)%', r.text, re.DOTALL)
-        if match:
-            val = round(float(match.group(1)), 1)
-            return make_indicator(
-                "aaii_bull", "AAII散户牛市情绪",
-                val, f"{val}%", "> 60%", val > 60
-            )
-    except Exception:
-        pass
-    return make_indicator(
-        "aaii_bull", "AAII散户牛市情绪",
-        None, "N/A", "> 60%", False, error="data source unavailable"
-    )
+    """获取 AAII 散户情绪数据"""
+    import re
+    # 尝试多个 URL 和解析方式
+    urls = [
+        "https://www.aaii.com/sentimentsurvey",
+        "https://www.aaii.com/sentimentsurvey/sent_results",
+    ]
+    for url in urls:
+        try:
+            r = requests.get(url, headers={
+                **HEADERS,
+                "Accept": "text/html",
+                "Referer": "https://www.aaii.com/",
+            }, timeout=TIMEOUT)
+            if r.status_code != 200:
+                continue
+            # 尝试多种模式匹配 Bullish 百分比
+            patterns = [
+                r'[Bb]ullish.*?(\d+\.?\d*)\s*%',
+                r'(\d+\.?\d*)\s*%\s*[Bb]ullish',
+                r'bullish.*?(\d{2}\.?\d*)',
+            ]
+            for pat in patterns:
+                match = re.search(pat, r.text, re.DOTALL)
+                if match:
+                    val = round(float(match.group(1)), 1)
+                    if 5 <= val <= 95:  # 合理范围
+                        return make_indicator(
+                            "aaii_bull", "AAII散户牛市情绪",
+                            val, f"{val}%", "> 60%", val > 60
+                        )
+        except Exception:
+            continue
+    raise ValueError("data source unavailable")
 
 
 @safe
@@ -386,9 +490,9 @@ def calc_naaim_exposure():
 # ---------------------------------------------------------------------------
 
 @safe
-def calc_pct_above_200d():
+def calc_pct_above_200d(sp500_tickers=None):
     """S&P 500 中在200日均线以上的股票占比"""
-    import re
+    # 优先尝试 yfinance 指标 ticker
     for ticker in ["MMTH", "^SPXA200R"]:
         try:
             df = yf_download(ticker, period="1mo")
@@ -404,13 +508,19 @@ def calc_pct_above_200d():
                 )
         except Exception:
             continue
+    # Fallback: 手动计算
+    if sp500_tickers:
+        current = calc_pct_above_ma(sp500_tickers, 200)
+        return make_indicator(
+            "pct_above_200d", "200日均线以上股票占比",
+            current, f"{current}%", "< 60%", current < 60
+        )
     raise ValueError("pct_above_200d data unavailable")
 
 
 @safe
-def calc_pct_above_50d():
+def calc_pct_above_50d(sp500_tickers=None):
     """S&P 500 中在50日均线以上的股票占比"""
-    import re
     for ticker in ["MMFI", "^SPXA50R"]:
         try:
             df = yf_download(ticker, period="1mo")
@@ -426,6 +536,13 @@ def calc_pct_above_50d():
                 )
         except Exception:
             continue
+    # Fallback: 手动计算
+    if sp500_tickers:
+        current = calc_pct_above_ma(sp500_tickers, 50)
+        return make_indicator(
+            "pct_above_50d", "50日均线以上股票占比",
+            current, f"{current}%", "> 80%", current > 80
+        )
     raise ValueError("pct_above_50d data unavailable")
 
 
@@ -894,12 +1011,21 @@ def build_output():
     }
 
     # ---- Category 3: 市场广度与内部健康 ----
-    pct200, _ = calc_pct_above_200d()
+    # 获取 S&P 500 成分股（供 200d/50d 手动计算用）
+    try:
+        print("Fetching S&P 500 constituents...", file=sys.stderr)
+        sp500 = get_sp500_tickers()
+        print(f"  Got {len(sp500)} tickers", file=sys.stderr)
+    except Exception as e:
+        print(f"[WARN] Failed to get S&P 500 list: {e}", file=sys.stderr)
+        sp500 = None
+
+    pct200, _ = calc_pct_above_200d(sp500)
     hind, _ = calc_hindenburg_omen()
     mccl, _ = calc_mcclellan_sum()
     ad_div, _ = calc_ad_line_divergence(df_2y)
     nyse_hl, _ = calc_nyse_high_low_pct()
-    pct50, _ = calc_pct_above_50d()
+    pct50, _ = calc_pct_above_50d(sp500)
 
     cat3 = {
         "id": "breadth",

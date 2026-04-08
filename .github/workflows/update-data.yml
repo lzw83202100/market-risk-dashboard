@@ -25,6 +25,7 @@ jobs:
         env:
           FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
         run: python scripts/fetch_data.py
+        timeout-minutes: 10
 
       - name: Commit and push
         run: |
