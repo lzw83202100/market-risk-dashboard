@@ -404,19 +404,6 @@ def calc_pct_above_200d():
                 )
         except Exception:
             continue
-    # 网页抓取 fallback
-    try:
-        url = "https://www.barchart.com/stocks/market-performance"
-        r = requests.get(url, headers={**HEADERS, "Accept": "text/html"}, timeout=TIMEOUT)
-        match = re.search(r'200-Day.*?(\d+\.?\d*)%', r.text, re.DOTALL)
-        if match:
-            current = round(float(match.group(1)), 1)
-            return make_indicator(
-                "pct_above_200d", "200日均线以上股票占比",
-                current, f"{current}%", "< 60%", current < 60
-            )
-    except Exception:
-        pass
     raise ValueError("pct_above_200d data unavailable")
 
 
@@ -439,19 +426,6 @@ def calc_pct_above_50d():
                 )
         except Exception:
             continue
-    # 网页抓取 fallback
-    try:
-        url = "https://www.barchart.com/stocks/market-performance"
-        r = requests.get(url, headers={**HEADERS, "Accept": "text/html"}, timeout=TIMEOUT)
-        match = re.search(r'50-Day.*?(\d+\.?\d*)%', r.text, re.DOTALL)
-        if match:
-            current = round(float(match.group(1)), 1)
-            return make_indicator(
-                "pct_above_50d", "50日均线以上股票占比",
-                current, f"{current}%", "> 80%", current > 80
-            )
-    except Exception:
-        pass
     raise ValueError("pct_above_50d data unavailable")
 
 
