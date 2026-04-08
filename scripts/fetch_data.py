@@ -136,62 +136,74 @@ def rsi(series, period=14):
 
 def get_sp500_tickers():
     """从 Wikipedia 获取 S&P 500 成分股列表"""
+    import re as _re
     url = "https://en.wikipedia.org/wiki/List_of_S%26P_500_companies"
     r = requests.get(url, headers=HEADERS, timeout=TIMEOUT)
     r.raise_for_status()
-    tables = pd.read_html(r.text)
-    df = tables[0]
-    tickers = df["Symbol"].tolist()
-    # 清理：BRK.B → BRK-B (yfinance 格式)
-    tickers = [t.replace(".", "-") for t in tickers]
-    return tickers
+    # 方法1: pd.read_html
+    try:
+        tables = pd.read_html(r.text)
+        df = tables[0]
+        tickers = df["Symbol"].tolist()
+        tickers = [t.replace(".", "-") for t in tickers]
+        if len(tickers) > 400:
+            return tickers
+    except Exception as e:
+        print(f"  pd.read_html failed: {e}", file=sys.stderr)
+    # 方法2: 正则提取 ticker symbols from table
+    # Wikipedia 表格中 ticker 在 <a> 标签中，格式如 NYSE: AAPL
+    tickers = []
+    # 匹配表格行中的 ticker symbols（1-5个大写字母）
+    matches = _re.findall(
+        r'<td[^>]*>\s*<a[^>]*>\s*([A-Z]{1,5}(?:-[A-Z])?)\s*</a>', r.text
+    )
+    if len(matches) > 400:
+        return [t.replace(".", "-") for t in matches]
+    # 方法3: 用主要 ETF 的持仓来近似
+    # 下载 SPY 的所有成分股 — 不现实，用大型蓝筹股代替
+    raise ValueError(f"Could not parse S&P 500 list (found {len(matches)} tickers)")
 
 
 def calc_pct_above_ma(tickers, ma_window):
-    """批量计算股票在 N 日均线以上的占比
-    下载足够的历史数据，计算每只股票当前价格 vs N日均线
-    """
-    # 需要至少 ma_window 个交易日的数据
+    """批量计算股票在 N 日均线以上的占比"""
     period = "1y" if ma_window <= 200 else "2y"
-    print(f"  Downloading {len(tickers)} stocks for {ma_window}-day MA check...", file=sys.stderr)
+    n = len(tickers)
+    print(f"  Downloading {n} stocks for {ma_window}-day MA check...", file=sys.stderr)
 
-    # 分批下载（每批50只，避免超时）
-    batch_size = 50
     above = 0
     total_valid = 0
+    batch_size = 100  # yfinance 支持大批量
 
-    for i in range(0, len(tickers), batch_size):
+    for i in range(0, n, batch_size):
         batch = tickers[i:i+batch_size]
         try:
-            df = yf.download(batch, period=period, progress=False)
+            df = yf.download(batch, period=period, progress=False, threads=True)
             if df.empty:
                 continue
             close = df["Close"]
             if isinstance(close, pd.Series):
-                # 单只股票
                 close = close.to_frame(batch[0])
 
-            for ticker in batch:
+            for ticker in close.columns:
                 try:
-                    if ticker not in close.columns:
-                        continue
                     series = close[ticker].dropna()
                     if len(series) < ma_window:
                         continue
-                    ma_val = series.rolling(ma_window).mean().iloc[-1]
-                    if pd.isna(ma_val):
+                    ma_val = float(series.rolling(ma_window).mean().iloc[-1])
+                    if np.isnan(ma_val):
                         continue
                     total_valid += 1
-                    if series.iloc[-1] > ma_val:
+                    if float(series.iloc[-1]) > ma_val:
                         above += 1
                 except Exception:
                     continue
         except Exception as e:
-            print(f"  Batch {i//batch_size} failed: {e}", file=sys.stderr)
+            print(f"  Batch {i//batch_size} error: {e}", file=sys.stderr)
             continue
+        print(f"  Batch {i//batch_size+1}/{(n-1)//batch_size+1}: {total_valid} valid so far", file=sys.stderr)
 
-    if total_valid == 0:
-        raise ValueError("No valid stocks found")
+    if total_valid < 100:
+        raise ValueError(f"Only {total_valid} valid stocks, need at least 100")
 
     pct = round(above / total_valid * 100, 1)
     print(f"  {ma_window}-day MA: {above}/{total_valid} = {pct}%", file=sys.stderr)
