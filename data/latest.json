@@ -1,6 +1,6 @@
 {
-  "updated_at": "2026-05-22T22:34:59Z",
-  "market_date": "2026-05-22",
+  "updated_at": "2026-05-25T22:35:15Z",
+  "market_date": "2026-05-25",
   "score": {
     "hits": 4,
     "total": 23,
@@ -94,8 +94,8 @@
         {
           "id": "vix",
           "name": "VIX波动率",
-          "current": 16.7,
-          "current_display": "16.7",
+          "current": 16.59,
+          "current_display": "16.59",
           "threshold": "< 11",
           "hit": false,
           "status": "normal",
@@ -131,8 +131,8 @@
         {
           "id": "pct_above_200d",
           "name": "200日均线以上股票占比",
-          "current": 59.3,
-          "current_display": "59.3%",
+          "current": 59.5,
+          "current_display": "59.5%",
           "threshold": "< 60%",
           "hit": true,
           "status": "hit",
@@ -208,8 +208,8 @@
         {
           "id": "etf_volume_momentum",
           "name": "ETF成交额动量(1周/4周)",
-          "current": -2.8,
-          "current_display": "-2.8%",
+          "current": -0.9,
+          "current_display": "-0.9%",
           "threshold": "> +30%",
           "hit": false,
           "status": "normal",
@@ -255,8 +255,8 @@
         {
           "id": "buffett_indicator",
           "name": "巴菲特指标(全球化调整)",
-          "current": 232.9,
-          "current_display": "232.9%",
+          "current": 233.9,
+          "current_display": "233.9%",
           "threshold": "> 180%",
           "hit": true,
           "status": "hit",
