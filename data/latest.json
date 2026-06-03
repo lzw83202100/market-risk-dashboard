@@ -1,12 +1,12 @@
 {
-  "updated_at": "2026-06-02T23:15:58Z",
-  "market_date": "2026-06-02",
+  "updated_at": "2026-06-03T23:18:27Z",
+  "market_date": "2026-06-03",
   "score": {
-    "hits": 4,
-    "total": 18,
+    "hits": 6,
+    "total": 23,
     "total_all": 32,
-    "pct": 22.2,
-    "level": "轻度预警(22.2%)"
+    "pct": 26.1,
+    "level": "轻度预警(26.1%)"
   },
   "categories": [
     {
@@ -17,8 +17,8 @@
         {
           "id": "qqq_2y_ma",
           "name": "QQQ 2年均线乘数",
-          "current": 1.368,
-          "current_display": "1.368x",
+          "current": 1.363,
+          "current_display": "1.363x",
           "threshold": "> 1.45x",
           "hit": false,
           "status": "normal",
@@ -27,8 +27,8 @@
         {
           "id": "spy_200d_dev",
           "name": "SPY 200日均线乖离率",
-          "current": 11.72,
-          "current_display": "+11.72%",
+          "current": 10.84,
+          "current_display": "+10.84%",
           "threshold": "> +20%",
           "hit": false,
           "status": "normal",
@@ -37,8 +37,8 @@
         {
           "id": "spy_monthly_rsi",
           "name": "月线RSI(SPY)",
-          "current": 76.8,
-          "current_display": "76.8",
+          "current": 76.0,
+          "current_display": "76.0",
           "threshold": "> 80",
           "hit": false,
           "status": "normal",
@@ -47,8 +47,8 @@
         {
           "id": "rainbow_valuation",
           "name": "美股彩虹图估值热图",
-          "current": 57.4,
-          "current_display": "+57.4%",
+          "current": 56.2,
+          "current_display": "+56.2%",
           "threshold": "> +40%",
           "hit": true,
           "status": "hit",
@@ -74,8 +74,8 @@
         {
           "id": "cnn_fear_greed",
           "name": "CNN恐慌贪婪指数",
-          "current": 57.0,
-          "current_display": "57.0",
+          "current": 54,
+          "current_display": "54",
           "threshold": "> 80",
           "hit": false,
           "status": "normal",
@@ -94,8 +94,8 @@
         {
           "id": "vix",
           "name": "VIX波动率",
-          "current": 15.77,
-          "current_display": "15.77",
+          "current": 16.06,
+          "current_display": "16.06",
           "threshold": "< 11",
           "hit": false,
           "status": "normal",
@@ -114,12 +114,12 @@
         {
           "id": "naaim_exposure",
           "name": "NAAIM机构风险敞口",
-          "current": null,
-          "current_display": "N/A",
+          "current": 98.4,
+          "current_display": "98.4%",
           "threshold": "> 85%",
-          "hit": false,
-          "status": "error",
-          "error": "data source unavailable"
+          "hit": true,
+          "status": "hit",
+          "error": null
         }
       ]
     },
@@ -181,8 +181,8 @@
         {
           "id": "pct_above_50d",
           "name": "50日均线以上股票占比",
-          "current": 52.5,
-          "current_display": "52.5%",
+          "current": 50.4,
+          "current_display": "50.4%",
           "threshold": "> 80%",
           "hit": false,
           "status": "normal",
@@ -208,8 +208,8 @@
         {
           "id": "etf_volume_momentum",
           "name": "ETF成交额动量(1周/4周)",
-          "current": -7.5,
-          "current_display": "-7.5%",
+          "current": -6.0,
+          "current_display": "-6.0%",
           "threshold": "> +30%",
           "hit": false,
           "status": "normal",
@@ -228,8 +228,8 @@
         {
           "id": "spy_rsp_divergence",
           "name": "SPY vs RSP等权重背离",
-          "current": 6.1,
-          "current_display": "+6.1%",
+          "current": 5.1,
+          "current_display": "+5.1%",
           "threshold": "> 15%",
           "hit": false,
           "status": "normal",
@@ -238,8 +238,8 @@
         {
           "id": "vix_term_structure",
           "name": "投机者情绪(VIX9D/VIX)",
-          "current": 0.836,
-          "current_display": "0.836",
+          "current": 0.835,
+          "current_display": "0.835",
           "threshold": "< 0.85",
           "hit": true,
           "status": "hit",
@@ -255,18 +255,18 @@
         {
           "id": "buffett_indicator",
           "name": "巴菲特指标(全球化调整)",
-          "current": null,
-          "current_display": "N/A",
+          "current": 238.8,
+          "current_display": "238.8%",
           "threshold": "> 180%",
-          "hit": false,
-          "status": "error",
-          "error": "429 Client Error: Too Many Requests for url: https://api.stlouisfed.org/fred/series/observations?series_id=GDP&api_key=39e5a1ae3c4c3af62be39d3ad61799f8&file_type=json&sort_order=desc&limit=5"
+          "hit": true,
+          "status": "hit",
+          "error": null
         },
         {
           "id": "shiller_cape",
           "name": "席勒CAPE(Margin调整)",
-          "current": 42.8,
-          "current_display": "42.8x",
+          "current": 42.5,
+          "current_display": "42.5x",
           "threshold": "> 42x",
           "hit": true,
           "status": "hit",
@@ -275,8 +275,8 @@
         {
           "id": "ndx_forward_pe",
           "name": "纳斯达克100追踪PE",
-          "current": 36.4,
-          "current_display": "36.4x",
+          "current": 36.3,
+          "current_display": "36.3x",
           "threshold": "> 38x",
           "hit": false,
           "status": "normal",
@@ -312,12 +312,12 @@
         {
           "id": "yield_curve_10y2y",
           "name": "美债收益率曲线(10Y-2Y)",
-          "current": null,
-          "current_display": "N/A",
+          "current": 0.41,
+          "current_display": "+0.41%",
           "threshold": "> +0.50%",
           "hit": false,
-          "status": "error",
-          "error": "429 Client Error: Too Many Requests for url: https://api.stlouisfed.org/fred/series/observations?series_id=T10Y2Y&api_key=39e5a1ae3c4c3af62be39d3ad61799f8&file_type=json&sort_order=desc&limit=30"
+          "status": "normal",
+          "error": null
         },
         {
           "id": "fed_funds_rate",
@@ -352,21 +352,21 @@
         {
           "id": "hy_oas",
           "name": "高收益信用利差(HY OAS)",
-          "current": null,
-          "current_display": "N/A",
+          "current": 271.0,
+          "current_display": "271bps",
           "threshold": "> 400bps",
           "hit": false,
-          "status": "error",
-          "error": "429 Client Error: Too Many Requests for url: https://api.stlouisfed.org/fred/series/observations?series_id=BAMLH0A0HYM2&api_key=39e5a1ae3c4c3af62be39d3ad61799f8&file_type=json&sort_order=desc&limit=10"
+          "status": "normal",
+          "error": null
         },
         {
           "id": "retail_defense",
           "name": "零售销售+防御板块强度",
-          "current": null,
-          "current_display": "N/A",
+          "current": 4.9,
+          "current_display": "零售YoY 4.9%, 进攻>防御",
           "threshold": "< 2% YoY + 防御板块跑赢",
           "hit": false,
-          "status": "error",
+          "status": "normal",
           "error": null
         }
       ]
