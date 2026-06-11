@@ -1,12 +1,12 @@
 {
-  "updated_at": "2026-06-10T23:07:40Z",
-  "market_date": "2026-06-10",
+  "updated_at": "2026-06-11T23:07:05Z",
+  "market_date": "2026-06-11",
   "score": {
-    "hits": 5,
+    "hits": 3,
     "total": 23,
     "total_all": 32,
-    "pct": 21.7,
-    "level": "轻度预警(21.7%)"
+    "pct": 13.0,
+    "level": "低风险(13.0%) 安全区"
   },
   "categories": [
     {
@@ -17,8 +17,8 @@
         {
           "id": "qqq_2y_ma",
           "name": "QQQ 2年均线乘数",
-          "current": 1.264,
-          "current_display": "1.264x",
+          "current": 1.305,
+          "current_display": "1.305x",
           "threshold": "> 1.45x",
           "hit": false,
           "status": "normal",
@@ -27,8 +27,8 @@
         {
           "id": "spy_200d_dev",
           "name": "SPY 200日均线乖离率",
-          "current": 6.2,
-          "current_display": "+6.20%",
+          "current": 7.93,
+          "current_display": "+7.93%",
           "threshold": "> +20%",
           "hit": false,
           "status": "normal",
@@ -37,8 +37,8 @@
         {
           "id": "spy_monthly_rsi",
           "name": "月线RSI(SPY)",
-          "current": 68.8,
-          "current_display": "68.8",
+          "current": 71.7,
+          "current_display": "71.7",
           "threshold": "> 80",
           "hit": false,
           "status": "normal",
@@ -47,8 +47,8 @@
         {
           "id": "rainbow_valuation",
           "name": "美股彩虹图估值热图",
-          "current": 49.9,
-          "current_display": "+49.9%",
+          "current": 52.3,
+          "current_display": "+52.3%",
           "threshold": "> +40%",
           "hit": true,
           "status": "hit",
@@ -74,8 +74,8 @@
         {
           "id": "cnn_fear_greed",
           "name": "CNN恐慌贪婪指数",
-          "current": 27.5,
-          "current_display": "27.5",
+          "current": 29.7,
+          "current_display": "29.7",
           "threshold": "> 80",
           "hit": false,
           "status": "normal",
@@ -94,8 +94,8 @@
         {
           "id": "vix",
           "name": "VIX波动率",
-          "current": 22.22,
-          "current_display": "22.22",
+          "current": 19.44,
+          "current_display": "19.44",
           "threshold": "< 11",
           "hit": false,
           "status": "normal",
@@ -114,11 +114,11 @@
         {
           "id": "naaim_exposure",
           "name": "NAAIM机构风险敞口",
-          "current": 86.8,
-          "current_display": "86.8%",
+          "current": 79.3,
+          "current_display": "79.3%",
           "threshold": "> 85%",
-          "hit": true,
-          "status": "hit",
+          "hit": false,
+          "status": "normal",
           "error": null
         }
       ]
@@ -131,11 +131,11 @@
         {
           "id": "pct_above_200d",
           "name": "200日均线以上股票占比",
-          "current": 59.5,
-          "current_display": "59.5%",
+          "current": 60.9,
+          "current_display": "60.9%",
           "threshold": "< 60%",
-          "hit": true,
-          "status": "hit",
+          "hit": false,
+          "status": "normal",
           "error": null
         },
         {
@@ -181,8 +181,8 @@
         {
           "id": "pct_above_50d",
           "name": "50日均线以上股票占比",
-          "current": 51.1,
-          "current_display": "51.1%",
+          "current": 56.3,
+          "current_display": "56.3%",
           "threshold": "> 80%",
           "hit": false,
           "status": "normal",
@@ -208,8 +208,8 @@
         {
           "id": "etf_volume_momentum",
           "name": "ETF成交额动量(1周/4周)",
-          "current": 30.7,
-          "current_display": "+30.7%",
+          "current": 36.1,
+          "current_display": "+36.1%",
           "threshold": "> +30%",
           "hit": true,
           "status": "hit",
@@ -228,8 +228,8 @@
         {
           "id": "spy_rsp_divergence",
           "name": "SPY vs RSP等权重背离",
-          "current": 2.6,
-          "current_display": "+2.6%",
+          "current": 3.0,
+          "current_display": "+3.0%",
           "threshold": "> 15%",
           "hit": false,
           "status": "normal",
@@ -238,8 +238,8 @@
         {
           "id": "vix_term_structure",
           "name": "投机者情绪(VIX9D/VIX)",
-          "current": 1.155,
-          "current_display": "1.155",
+          "current": 1.063,
+          "current_display": "1.063",
           "threshold": "< 0.85",
           "hit": false,
           "status": "normal",
@@ -255,8 +255,8 @@
         {
           "id": "buffett_indicator",
           "name": "巴菲特指标(全球化调整)",
-          "current": 232.1,
-          "current_display": "232.1%",
+          "current": 228.3,
+          "current_display": "228.3%",
           "threshold": "> 180%",
           "hit": true,
           "status": "hit",
@@ -265,8 +265,8 @@
         {
           "id": "shiller_cape",
           "name": "席勒CAPE(Margin调整)",
-          "current": 40.9,
-          "current_display": "40.9x",
+          "current": 41.2,
+          "current_display": "41.2x",
           "threshold": "> 42x",
           "hit": false,
           "status": "normal",
@@ -275,8 +275,8 @@
         {
           "id": "ndx_forward_pe",
           "name": "纳斯达克100追踪PE",
-          "current": 31.0,
-          "current_display": "31.0x",
+          "current": 32.0,
+          "current_display": "32.0x",
           "threshold": "> 38x",
           "hit": false,
           "status": "normal",
@@ -312,8 +312,8 @@
         {
           "id": "yield_curve_10y2y",
           "name": "美债收益率曲线(10Y-2Y)",
-          "current": 0.42,
-          "current_display": "+0.42%",
+          "current": 0.4,
+          "current_display": "+0.40%",
           "threshold": "> +0.50%",
           "hit": false,
           "status": "normal",
@@ -342,8 +342,8 @@
         {
           "id": "wei",
           "name": "Weekly Economic Index",
-          "current": 3.23,
-          "current_display": "3.23",
+          "current": 2.9,
+          "current_display": "2.9",
           "threshold": "< 0",
           "hit": false,
           "status": "normal",
@@ -352,8 +352,8 @@
         {
           "id": "hy_oas",
           "name": "高收益信用利差(HY OAS)",
-          "current": 278.0,
-          "current_display": "278bps",
+          "current": 280.0,
+          "current_display": "280bps",
           "threshold": "> 400bps",
           "hit": false,
           "status": "normal",
@@ -363,7 +363,7 @@
           "id": "retail_defense",
           "name": "零售销售+防御板块强度",
           "current": 4.9,
-          "current_display": "零售YoY 4.9%, 防御>进攻",
+          "current_display": "零售YoY 4.9%, 进攻>防御",
           "threshold": "< 2% YoY + 防御板块跑赢",
           "hit": false,
           "status": "normal",
