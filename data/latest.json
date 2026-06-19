@@ -1,12 +1,12 @@
 {
-  "updated_at": "2026-06-18T23:19:01Z",
-  "market_date": "2026-06-18",
+  "updated_at": "2026-06-19T22:32:06Z",
+  "market_date": "2026-06-19",
   "score": {
-    "hits": 4,
+    "hits": 3,
     "total": 23,
     "total_all": 32,
-    "pct": 17.4,
-    "level": "轻度预警(17.4%)"
+    "pct": 13.0,
+    "level": "低风险(13.0%) 安全区"
   },
   "categories": [
     {
@@ -27,8 +27,8 @@
         {
           "id": "spy_200d_dev",
           "name": "SPY 200日均线乖离率",
-          "current": 8.82,
-          "current_display": "+8.82%",
+          "current": 9.09,
+          "current_display": "+9.09%",
           "threshold": "> +20%",
           "hit": false,
           "status": "normal",
@@ -37,8 +37,8 @@
         {
           "id": "spy_monthly_rsi",
           "name": "月线RSI(SPY)",
-          "current": 73.9,
-          "current_display": "73.9",
+          "current": 74.4,
+          "current_display": "74.4",
           "threshold": "> 80",
           "hit": false,
           "status": "normal",
@@ -47,8 +47,8 @@
         {
           "id": "rainbow_valuation",
           "name": "美股彩虹图估值热图",
-          "current": 53.8,
-          "current_display": "+53.8%",
+          "current": 54.2,
+          "current_display": "+54.2%",
           "threshold": "> +40%",
           "hit": true,
           "status": "hit",
@@ -74,8 +74,8 @@
         {
           "id": "cnn_fear_greed",
           "name": "CNN恐慌贪婪指数",
-          "current": 37.5,
-          "current_display": "37.5",
+          "current": 37.3,
+          "current_display": "37.3",
           "threshold": "> 80",
           "hit": false,
           "status": "normal",
@@ -94,8 +94,8 @@
         {
           "id": "vix",
           "name": "VIX波动率",
-          "current": 16.4,
-          "current_display": "16.4",
+          "current": 16.78,
+          "current_display": "16.78",
           "threshold": "< 11",
           "hit": false,
           "status": "normal",
@@ -131,8 +131,8 @@
         {
           "id": "pct_above_200d",
           "name": "200日均线以上股票占比",
-          "current": 60.7,
-          "current_display": "60.7%",
+          "current": 61.1,
+          "current_display": "61.1%",
           "threshold": "< 60%",
           "hit": false,
           "status": "normal",
@@ -208,8 +208,8 @@
         {
           "id": "etf_volume_momentum",
           "name": "ETF成交额动量(1周/4周)",
-          "current": 17.0,
-          "current_display": "+17.0%",
+          "current": 20.2,
+          "current_display": "+20.2%",
           "threshold": "> +30%",
           "hit": false,
           "status": "normal",
@@ -228,8 +228,8 @@
         {
           "id": "spy_rsp_divergence",
           "name": "SPY vs RSP等权重背离",
-          "current": 4.8,
-          "current_display": "+4.8%",
+          "current": 5.1,
+          "current_display": "+5.1%",
           "threshold": "> 15%",
           "hit": false,
           "status": "normal",
@@ -238,11 +238,11 @@
         {
           "id": "vix_term_structure",
           "name": "投机者情绪(VIX9D/VIX)",
-          "current": 0.849,
-          "current_display": "0.849",
+          "current": 0.976,
+          "current_display": "0.976",
           "threshold": "< 0.85",
-          "hit": true,
-          "status": "hit",
+          "hit": false,
+          "status": "normal",
           "error": null
         }
       ]
