@@ -1,12 +1,12 @@
 {
-  "updated_at": "2026-10-07T00:54:39Z",
-  "market_date": "2026-10-07",
+  "updated_at": "2026-10-08T01:10:54Z",
+  "market_date": "2026-10-08",
   "score": {
-    "hits": 4,
+    "hits": 5,
     "total": 22,
     "total_all": 32,
-    "pct": 18.2,
-    "level": "轻度预警(18.2%)"
+    "pct": 22.7,
+    "level": "轻度预警(22.7%)"
   },
   "categories": [
     {
@@ -74,8 +74,8 @@
         {
           "id": "cnn_fear_greed",
           "name": "CNN恐慌贪婪指数",
-          "current": 47.4,
-          "current_display": "47.4",
+          "current": 44.6,
+          "current_display": "44.6",
           "threshold": "> 80",
           "hit": false,
           "status": "normal",
@@ -94,8 +94,8 @@
         {
           "id": "vix",
           "name": "VIX波动率",
-          "current": 15.01,
-          "current_display": "15.01",
+          "current": 15.08,
+          "current_display": "15.08",
           "threshold": "< 11",
           "hit": false,
           "status": "normal",
@@ -131,8 +131,8 @@
         {
           "id": "pct_above_200d",
           "name": "200日均线以上股票占比",
-          "current": 50.0,
-          "current_display": "50.0%",
+          "current": 50.1,
+          "current_display": "50.1%",
           "threshold": "< 60%",
           "hit": true,
           "status": "hit",
@@ -181,8 +181,8 @@
         {
           "id": "pct_above_50d",
           "name": "50日均线以上股票占比",
-          "current": 30.0,
-          "current_display": "30.0%",
+          "current": 30.1,
+          "current_display": "30.1%",
           "threshold": "> 80%",
           "hit": false,
           "status": "normal",
@@ -238,8 +238,8 @@
         {
           "id": "vix_term_structure",
           "name": "投机者情绪(VIX9D/VIX)",
-          "current": 0.801,
-          "current_display": "0.801",
+          "current": 0.781,
+          "current_display": "0.781",
           "threshold": "< 0.85",
           "hit": true,
           "status": "hit",
@@ -265,8 +265,8 @@
         {
           "id": "shiller_cape",
           "name": "席勒CAPE(Margin调整)",
-          "current": 41.9,
-          "current_display": "41.9x",
+          "current": 41.8,
+          "current_display": "41.8x",
           "threshold": "> 42x",
           "hit": false,
           "status": "normal",
@@ -275,8 +275,8 @@
         {
           "id": "ndx_forward_pe",
           "name": "纳斯达克100追踪PE",
-          "current": 29.1,
-          "current_display": "29.1x",
+          "current": 30.9,
+          "current_display": "30.9x",
           "threshold": "> 38x",
           "hit": false,
           "status": "normal",
@@ -312,11 +312,11 @@
         {
           "id": "yield_curve_10y2y",
           "name": "美债收益率曲线(10Y-2Y)",
-          "current": 0.48,
-          "current_display": "+0.48%",
+          "current": 0.51,
+          "current_display": "+0.51%",
           "threshold": "> +0.50%",
-          "hit": false,
-          "status": "normal",
+          "hit": true,
+          "status": "hit",
           "error": null
         },
         {
@@ -352,8 +352,8 @@
         {
           "id": "hy_oas",
           "name": "高收益信用利差(HY OAS)",
-          "current": 312.0,
-          "current_display": "312bps",
+          "current": 303.0,
+          "current_display": "303bps",
           "threshold": "> 400bps",
           "hit": false,
           "status": "normal",
