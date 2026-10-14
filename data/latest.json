@@ -1,6 +1,6 @@
 {
-  "updated_at": "2026-10-13T02:40:29Z",
-  "market_date": "2026-10-13",
+  "updated_at": "2026-10-14T00:28:34Z",
+  "market_date": "2026-10-14",
   "score": {
     "hits": 4,
     "total": 22,
@@ -74,8 +74,8 @@
         {
           "id": "cnn_fear_greed",
           "name": "CNN恐慌贪婪指数",
-          "current": 45.7,
-          "current_display": "45.7",
+          "current": 44.7,
+          "current_display": "44.7",
           "threshold": "> 80",
           "hit": false,
           "status": "normal",
@@ -94,8 +94,8 @@
         {
           "id": "vix",
           "name": "VIX波动率",
-          "current": 15.21,
-          "current_display": "15.21",
+          "current": 15.27,
+          "current_display": "15.27",
           "threshold": "< 11",
           "hit": false,
           "status": "normal",
@@ -238,8 +238,8 @@
         {
           "id": "vix_term_structure",
           "name": "投机者情绪(VIX9D/VIX)",
-          "current": 0.768,
-          "current_display": "0.768",
+          "current": 0.785,
+          "current_display": "0.785",
           "threshold": "< 0.85",
           "hit": true,
           "status": "hit",
@@ -265,8 +265,8 @@
         {
           "id": "shiller_cape",
           "name": "席勒CAPE(Margin调整)",
-          "current": 41.9,
-          "current_display": "41.9x",
+          "current": 41.8,
+          "current_display": "41.8x",
           "threshold": "> 42x",
           "hit": false,
           "status": "normal",
@@ -275,8 +275,8 @@
         {
           "id": "ndx_forward_pe",
           "name": "纳斯达克100追踪PE",
-          "current": 28.6,
-          "current_display": "28.6x",
+          "current": 28.5,
+          "current_display": "28.5x",
           "threshold": "> 38x",
           "hit": false,
           "status": "normal",
@@ -312,8 +312,8 @@
         {
           "id": "yield_curve_10y2y",
           "name": "美债收益率曲线(10Y-2Y)",
-          "current": 0.44,
-          "current_display": "+0.44%",
+          "current": 0.42,
+          "current_display": "+0.42%",
           "threshold": "> +0.50%",
           "hit": false,
           "status": "normal",
@@ -352,8 +352,8 @@
         {
           "id": "hy_oas",
           "name": "高收益信用利差(HY OAS)",
-          "current": 315.0,
-          "current_display": "315bps",
+          "current": 311.0,
+          "current_display": "311bps",
           "threshold": "> 400bps",
           "hit": false,
           "status": "normal",
