@@ -1,6 +1,6 @@
 {
-  "updated_at": "2026-11-10T03:42:38Z",
-  "market_date": "2026-11-10",
+  "updated_at": "2026-11-11T01:22:01Z",
+  "market_date": "2026-11-11",
   "score": {
     "hits": 3,
     "total": 22,
@@ -74,8 +74,8 @@
         {
           "id": "cnn_fear_greed",
           "name": "CNN恐慌贪婪指数",
-          "current": 31.7,
-          "current_display": "31.7",
+          "current": 33.5,
+          "current_display": "33.5",
           "threshold": "> 80",
           "hit": false,
           "status": "normal",
@@ -94,8 +94,8 @@
         {
           "id": "vix",
           "name": "VIX波动率",
-          "current": 19.92,
-          "current_display": "19.92",
+          "current": 19.46,
+          "current_display": "19.46",
           "threshold": "< 11",
           "hit": false,
           "status": "normal",
@@ -208,8 +208,8 @@
         {
           "id": "etf_volume_momentum",
           "name": "ETF成交额动量(1周/4周)",
-          "current": 33.4,
-          "current_display": "+33.4%",
+          "current": 33.5,
+          "current_display": "+33.5%",
           "threshold": "> +30%",
           "hit": true,
           "status": "hit",
@@ -238,8 +238,8 @@
         {
           "id": "vix_term_structure",
           "name": "投机者情绪(VIX9D/VIX)",
-          "current": 0.998,
-          "current_display": "0.998",
+          "current": 0.953,
+          "current_display": "0.953",
           "threshold": "< 0.85",
           "hit": false,
           "status": "normal",
@@ -265,8 +265,8 @@
         {
           "id": "shiller_cape",
           "name": "席勒CAPE(Margin调整)",
-          "current": 39.9,
-          "current_display": "39.9x",
+          "current": 39.7,
+          "current_display": "39.7x",
           "threshold": "> 42x",
           "hit": false,
           "status": "normal",
@@ -275,8 +275,8 @@
         {
           "id": "ndx_forward_pe",
           "name": "纳斯达克100追踪PE",
-          "current": 28.0,
-          "current_display": "28.0x",
+          "current": 27.8,
+          "current_display": "27.8x",
           "threshold": "> 38x",
           "hit": false,
           "status": "normal",
@@ -312,8 +312,8 @@
         {
           "id": "yield_curve_10y2y",
           "name": "美债收益率曲线(10Y-2Y)",
-          "current": 0.32,
-          "current_display": "+0.32%",
+          "current": 0.25,
+          "current_display": "+0.25%",
           "threshold": "> +0.50%",
           "hit": false,
           "status": "normal",
@@ -352,8 +352,8 @@
         {
           "id": "hy_oas",
           "name": "高收益信用利差(HY OAS)",
-          "current": 342.0,
-          "current_display": "342bps",
+          "current": 334.0,
+          "current_display": "334bps",
           "threshold": "> 400bps",
           "hit": false,
           "status": "normal",
