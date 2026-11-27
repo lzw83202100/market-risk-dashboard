@@ -1,6 +1,6 @@
 {
-  "updated_at": "2026-11-26T03:42:31Z",
-  "market_date": "2026-11-26",
+  "updated_at": "2026-11-27T03:43:15Z",
+  "market_date": "2026-11-27",
   "score": {
     "hits": 3,
     "total": 21,
@@ -74,8 +74,8 @@
         {
           "id": "cnn_fear_greed",
           "name": "CNN恐慌贪婪指数",
-          "current": 15.2,
-          "current_display": "15.2",
+          "current": 15.0,
+          "current_display": "15.0",
           "threshold": "> 80",
           "hit": false,
           "status": "normal",
@@ -94,8 +94,8 @@
         {
           "id": "vix",
           "name": "VIX波动率",
-          "current": 28.29,
-          "current_display": "28.29",
+          "current": 26.8,
+          "current_display": "26.8",
           "threshold": "< 11",
           "hit": false,
           "status": "normal",
@@ -208,8 +208,8 @@
         {
           "id": "etf_volume_momentum",
           "name": "ETF成交额动量(1周/4周)",
-          "current": 34.7,
-          "current_display": "+34.7%",
+          "current": 34.8,
+          "current_display": "+34.8%",
           "threshold": "> +30%",
           "hit": true,
           "status": "hit",
@@ -363,7 +363,7 @@
           "id": "retail_defense",
           "name": "零售销售+防御板块强度",
           "current": 6.8,
-          "current_display": "零售YoY 6.8%, 防御>进攻",
+          "current_display": "零售YoY 6.8%, 进攻>防御",
           "threshold": "< 2% YoY + 防御板块跑赢",
           "hit": false,
           "status": "normal",
